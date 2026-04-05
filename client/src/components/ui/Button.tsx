@@ -3,15 +3,15 @@ import type { ReactElement } from "react";
 interface ButtonProps {
   text: string;
   variant: "primary" | "secondary";
-  size: "sm" | "md" | "lg";
+  size?: "sm" | "md" | "lg";
   startIcon?: ReactElement;
   endIcon?: ReactElement;
   onClick?: () => void;
 }
-
+ 
 const varientStyles = {
   primary: "bg-purple-600 text-white ",
-  secondary: "bg-purple-300 text-purple-600 hover:bg-purple-400",
+  secondary: "bg-purple-200 text-purple-600 hover:bg-purple-400",
 };
 
 const sizeStyles = {
@@ -20,19 +20,16 @@ const sizeStyles = {
   lg: "py-4 px-6",
 };
 
-const defaultStyles = `rounded-md `;
+const defaultStyles = `rounded-md px-4 py-2 font-light flex justify-center items-center gap-2`;
 
-const Button = (props: ButtonProps) => {
+const Button = ({variant,text,startIcon,onClick}: ButtonProps) => {
   return (
     <button
-      onClick={props.onClick}
-      className={`${varientStyles[props.variant]} ${defaultStyles} ${sizeStyles[props.size]}`}
+      onClick={onClick}
+      className={`${varientStyles[variant]} ${defaultStyles} `}
     >
-      <div className="flex items-center gap-2">
-        {props.startIcon}
-        {props.text}
-        {props.endIcon}
-      </div>
+        {startIcon}
+        {text}
     </button>
   );
 };
