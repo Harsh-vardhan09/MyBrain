@@ -1,8 +1,12 @@
+import type { ReactElement } from "react"
 
-const SidebarItem = () => {
+const SidebarItem = ({text,icon}:{
+  text:string,
+  icon:ReactElement
+}) => {
   return (
-    <div>
-      
+    <div className="flex py-2 gap-2 items-center text-gray-700">
+      {icon}{text}
     </div>
   )
 }

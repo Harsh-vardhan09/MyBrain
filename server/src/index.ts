@@ -12,6 +12,7 @@ import jwt from 'jsonwebtoken'
 import { ContentModel, LinkModel, UserModel } from "./db.js";
 import { userMiddleware } from "./middleware.js";
 import { random } from "./utils.js";
+import {configDotenv} from 'dotenv'
 
 const app = express();
 app.use(express.json());

@@ -7,6 +7,7 @@ interface ButtonProps {
   startIcon?: ReactElement;
   endIcon?: ReactElement;
   onClick?: () => void;
+  fullWidth?:Boolean
 }
  
 const varientStyles = {
@@ -22,11 +23,11 @@ const sizeStyles = {
 
 const defaultStyles = `rounded-md px-4 py-2 font-light flex justify-center items-center gap-2`;
 
-const Button = ({variant,text,startIcon,onClick}: ButtonProps) => {
+const Button = ({variant,text,startIcon,onClick,fullWidth}: ButtonProps) => {
   return (
     <button
       onClick={onClick}
-      className={`${varientStyles[variant]} ${defaultStyles} `}
+      className={`${varientStyles[variant]} ${defaultStyles} ${fullWidth?'w-full':''}`}
     >
         {startIcon}
         {text}
