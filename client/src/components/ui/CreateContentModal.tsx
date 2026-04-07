@@ -1,12 +1,41 @@
+import { useRef, useState } from "react";
 import CrossIcon from "../../icons/CrossIcon";
 import Button from "./Button";
 import Input from "./Input";
+import axios from "axios";
 
+
+enum ContentType{
+  Youtube='youtube',
+  Twitter="twitter"
+}
 // Controlled component
 const CreateContentModal = ({ open, onClose}:{
 open:boolean,
 onClose:()=>void
 }) => {
+   
+  const titleRef=useRef<HTMLInputElement>(null);
+  const linkRef=useRef<HTMLInputElement>(null);
+  const [type,setType]=useState(ContentType.Youtube)
+  
+  const addContent=async()=>{
+    const title=titleRef.current?.value
+    const link=linkRef.current?.value
+
+    await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/content`,{
+      link,  
+      title,
+      type
+    },{
+      headers:{
+        "Authorization":localStorage.getItem('token')
+      }
+    })
+    alert('content added')
+    onClose()
+  }
+
   return (
     <div>
       {open && (
@@ -16,11 +45,15 @@ onClose:()=>void
               <CrossIcon size="lg" />
             </div>
             <div>
-              <Input placeholder="title"  />
-              <Input placeholder="link" />
+              <Input ref={titleRef} placeholder="title"  />
+              <Input ref={linkRef} placeholder="link" />
             </div>
-            <div className="flex justify-center">
-              <Button variant="primary" text="Submit" />
+            <div className="flex gap-12 justify-center">
+              <Button onClick={()=>setType(ContentType.Youtube)} text="Youtube" variant={type===ContentType.Youtube?'primary':'secondary'}/>
+              <Button onClick={()=>setType(ContentType.Twitter)} text="twitter" variant={type===ContentType.Twitter?'primary':'secondary'}/>
+            </div>
+            <div className="flex justify-center pt-2">
+              <Button onClick={addContent} variant="primary" text="Submit" fullWidth={true} />
             </div>
           </div>
         </div>

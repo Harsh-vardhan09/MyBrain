@@ -1,13 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "../components/ui/Button";
 import Card from "../components/ui/Card";
 import CreateContentModal from "../components/ui/CreateContentModal";
 import PlusIcon from "../icons/PlusIcon";
 import ShareIcon from "../icons/ShareIcon";
 import Sidebar from "../components/ui/Sidebar";
+import UseContent from "../hooks/UseContent";
+import axios from "axios";
 
 const Dashboard = () => {
   const [modelOpen, setModelOpen] = useState(false);
+  const { contents, refresh } = UseContent();
+
+  useEffect(() => {
+    refresh;
+  }, [modelOpen]);
   return (
     <div>
       <Sidebar />
@@ -25,24 +32,31 @@ const Dashboard = () => {
             onClick={() => setModelOpen(true)}
           />
           <Button
+            onClick={async() => {
+              const res=await axios.post(
+                `${import.meta.env.VITE_BACKEND_URL}/api/v1/brain/share`,
+                {
+                  share:true
+                },
+                {
+                  headers: {
+                    Authorization: localStorage.getItem("token"),
+                  },
+                },
+              );
+              const shareUrl= `http://localhost:5173${res.data.hash}`
+              alert(shareUrl);
+            }}
             variant="secondary"
             text="Share Brain"
             startIcon={<ShareIcon size="md" />}
           />
         </div>
 
-        <div className="flex gap-4">
-          <Card
-            link="https://x.com/therahul4402/status/2040454094712942878"
-            type="twitter"
-            title="first tweet"
-          />
-
-          <Card
-            link="https://www.youtube.com/watch?v=JeInwySxuxA"
-            type="youtube"
-            title="sideman"
-          />
+        <div className="flex gap-4 flex-wrap">
+          {contents.map(({ type, link, title }) => (
+            <Card link={link} type={type} title={title} />
+          ))}
         </div>
       </div>
     </div>

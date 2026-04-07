@@ -1,5 +1,6 @@
 import mongoose, { model, Schema } from "mongoose";
-import {configDotenv} from 'dotenv'
+import 'dotenv/config';
+
 
 mongoose.connect(process.env.MONGODB_URI!)
     .then(() => console.log('Connected!')).catch((err) => {
@@ -21,6 +22,7 @@ const ContentSchema=new Schema({
         type:mongoose.Types.ObjectId,
         ref:'Tag'
     }],
+    type:String,
     userId:{
         type:mongoose.Types.ObjectId,
         ref:'User',

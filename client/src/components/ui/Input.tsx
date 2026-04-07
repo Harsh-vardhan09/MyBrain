@@ -1,6 +1,6 @@
-const Input = ({ onChange, placeholder }: { 
-    onChange?: () => void,
-    placeholder:string
+const Input = ({ placeholder,ref }: { 
+    placeholder:string;
+    ref?:any
  }) => {
   return (
     <div className="">
@@ -8,7 +8,7 @@ const Input = ({ onChange, placeholder }: {
         placeholder={placeholder}
         type={"text"}
         className="px-4 py-2 rounded border m-2"
-        onChange={onChange}
+        ref={ref}
       />
     </div>
   );

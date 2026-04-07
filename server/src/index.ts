@@ -12,13 +12,13 @@ import jwt from 'jsonwebtoken'
 import { ContentModel, LinkModel, UserModel } from "./db.js";
 import { userMiddleware } from "./middleware.js";
 import { random } from "./utils.js";
-import {configDotenv} from 'dotenv'
+import 'dotenv/config';
+import  cors from 'cors'
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 
-
-const JWT_PASSWORD = "12345";
 
 app.post('/api/v1/signup', async (req, res) => {
     //zod validation
@@ -50,7 +50,7 @@ app.post('/api/v1/signin', async (req, res) => {
     if (existingUser) {
         const token = jwt.sign({
             id: existingUser._id
-        }, JWT_PASSWORD)
+        }, process.env.JWT_PASSWORD!)
         res.json({
             token
         })
@@ -64,12 +64,14 @@ app.post('/api/v1/signin', async (req, res) => {
 app.post('/api/v1/content', userMiddleware, async (req, res) => {
     const link = req.body.link;
     const title = req.body.title;
+    const type=req.body.type;
     await ContentModel.create({
         link,
         title,
+         type,
         //@ts-ignore
         userId: req.userId,
-        tag: []
+       
     })
     return res.json({
         message: "content added"
